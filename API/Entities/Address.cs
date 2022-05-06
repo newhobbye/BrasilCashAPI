@@ -8,7 +8,6 @@ namespace API.Entities
     public class Address
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string AddressId { get; set; }
         public string Street { get; set; }
         public string District { get; set; }

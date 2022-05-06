@@ -1,25 +1,28 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace API.Migrations
 {
-    public partial class clientDB : Migration
+    public partial class ClientAddress : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "dbo.client",
+                name: "dbo.clientAPI",
                 columns: table => new
                 {
                     Tax_id = table.Column<string>(type: "nvarchar(11)", maxLength: 11, nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Phone_number = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Phone_number = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Created_at = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Postal_Code = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AddressId = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_dbo.client", x => x.Tax_id);
+                    table.PrimaryKey("PK_dbo.clientAPI", x => x.Tax_id);
                 });
 
             migrationBuilder.CreateTable(
@@ -37,9 +40,9 @@ namespace API.Migrations
                 {
                     table.PrimaryKey("PK_Address", x => x.AddressId);
                     table.ForeignKey(
-                        name: "FK_Address_dbo.client_ClientId",
+                        name: "FK_Address_dbo.clientAPI_ClientId",
                         column: x => x.ClientId,
-                        principalTable: "dbo.client",
+                        principalTable: "dbo.clientAPI",
                         principalColumn: "Tax_id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -58,7 +61,7 @@ namespace API.Migrations
                 name: "Address");
 
             migrationBuilder.DropTable(
-                name: "dbo.client");
+                name: "dbo.clientAPI");
         }
     }
 }

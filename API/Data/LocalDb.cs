@@ -12,6 +12,7 @@ namespace API.Data
         }
 
         public DbSet<Client> Clients { get; set; }
+        public DbSet<Address> Address { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -19,6 +20,11 @@ namespace API.Data
                 .HasOne(b => b.Address)
                 .WithOne(i => i.Client)
                 .HasForeignKey<Address>(b => b.ClientId);
+
+            modelBuilder.Entity<Address>()
+                .HasOne(c => c.Client)
+                .WithOne(a => a.Address)
+                .HasPrincipalKey<Client>(t => t.Tax_id);
         }
 
     }
