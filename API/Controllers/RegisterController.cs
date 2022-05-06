@@ -15,17 +15,17 @@ namespace API.Controllers
     [Route("api/account")]
     public class RegisterController : Controller
     {
-        private LocalDb _localDb;
-        private ZipCodeService _zipCode;
-       
-
-       
         public RegisterController(LocalDb localDb, ZipCodeService zipCode)
         {
             _localDb = localDb;
             _zipCode = zipCode;
             
+            
         }
+        private LocalDb _localDb;
+        private ZipCodeService _zipCode;
+             
+           
 
         [HttpGet]
         public IEnumerable<Client> GetClients()
@@ -50,27 +50,38 @@ namespace API.Controllers
         [HttpGet("{taxId}")]
         public IActionResult GetClientByTaxId(string taxId)
         {
-            Client client = _localDb.Clients.FirstOrDefault(x => x.Tax_id == taxId);
-            client.Address = _localDb.Address.FirstOrDefault(a => a.AddressId == taxId);
-            if (client != null)
+            
+                Client client = _localDb.Clients.FirstOrDefault(x => x.Tax_id == taxId);
+                if(client == null)
             {
-                return Ok(client);
+                return NotFound("Usuario não encontrado!");
             }
+                client.Address = _localDb.Address.FirstOrDefault(a => a.AddressId == taxId);
+                
+                 
+                return Ok(client);              
 
-            return NotFound();
         }
 
-        
 
         [HttpPost]
         public IActionResult AddClient([FromBody] Client client)
         {
             if (client == null)
             {
-                return NotFound();
+                return NotFound("usuario vazio!");
             }
 
-            if (!client.Postal_Code.All(char.IsDigit) || string.IsNullOrWhiteSpace(client.Postal_Code))
+            
+            string cpf = client.Tax_id;
+            var validation = IdentityValidationService.IsCpfValid(cpf);
+            if (validation == false)
+            {
+                return StatusCode(400, "CPF Invalido!");
+            }
+
+
+                if (!client.Postal_Code.All(char.IsDigit) || string.IsNullOrWhiteSpace(client.Postal_Code))
             {
                 client.Status = "Pending";
             }
@@ -103,10 +114,10 @@ namespace API.Controllers
                 _localDb.Remove(client);
                 _localDb.Remove(address);
                 _localDb.SaveChanges();
-                return NoContent();
+                return Ok("Usuario removido");
             }
 
-            return NotFound();
+            return NotFound("Usuario não encontrado!");
         }
 
 

@@ -35,6 +35,7 @@ namespace API
             services.AddControllers();
             services.AddDbContext<LocalDb>(opt => opt.UseSqlServer(Configuration.GetConnectionString("ConectionDB")));
             services.AddTransient<ZipCodeService>();
+            services.AddTransient<IdentityValidationService>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "BrasilCashAPI", Version = "v1" });
