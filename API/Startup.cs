@@ -1,5 +1,7 @@
 using API.Data;
 using API.Services;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -34,6 +36,8 @@ namespace API
 
             services.AddControllers();
             services.AddDbContext<LocalDb>(opt => opt.UseSqlServer(Configuration.GetConnectionString("ConectionDB")));
+            services.AddControllers().AddFluentValidation(x => x.RegisterValidatorsFromAssemblyContaining<Startup>());
+            
             services.AddTransient<ZipCodeService>();
             services.AddTransient<IdentityValidationService>();
             services.AddSwaggerGen(c =>

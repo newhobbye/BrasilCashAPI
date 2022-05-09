@@ -11,15 +11,11 @@ namespace API.Entities
     public class Client: IUser
     {
         [Key]
-        [Required(ErrorMessage = "Campo CPF é obrigatório!")]
-        [StringLength(11, MinimumLength = 11)]
         public string Tax_id { get; set; }
 
-        [Required(ErrorMessage = "Campo nome é obrigatório!")]
+       
         public string Name { get; set; }
 
-        [Required(ErrorMessage = "Campo senha é obrigatório!")]
-        [StringLength(40, MinimumLength = 8)]
         public string Password { get; set; }
         public string Phone_number { get; set; }
         public DateTime Created_at { get; set; }
