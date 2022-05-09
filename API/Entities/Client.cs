@@ -1,4 +1,5 @@
 ﻿
+using API.Interface;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -7,7 +8,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace API.Entities
 {
     [Table("dbo.clientAPI")]
-    public class Client
+    public class Client: IUser
     {
         [Key]
         [Required(ErrorMessage = "Campo CPF é obrigatório!")]
@@ -27,7 +28,7 @@ namespace API.Entities
 
         public string AddressId { get; set; }
         public Address Address { get; set; }
-
+       
 
         public Client()
         {
